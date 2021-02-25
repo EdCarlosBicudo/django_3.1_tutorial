@@ -24,10 +24,18 @@ class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
 
+    def get_queryset(self):
+        """Exclui questões ainda não publicadas."""
+        return Question.objects.filter(pub_date__lte=timezone.now().date())
+
 
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
+    def get_queryset(self):
+        """Exclui questões ainda não publicadas."""
+        return Question.objects.filter(pub_date__lte=timezone.now().date())
 
 
 def vote(request, question_id):
